@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>パスワード保護ページ</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; padding-top: 50px; }
+        input { padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 5px; }
+        button { padding: 10px 20px; font-size: 16px; background: #007aff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <h2>パスワードを入力してください</h2>
+    <input type="text" id="pw" placeholder="例: 0302">
+    <button onclick="checkPassword()">入室</button>
+
+    <script>
+        function checkPassword() {
+            const input = document.getElementById('pw').value;
+            
+            // 今日の日付を取得して「MMDD」形式にする
+            const now = new Date();
+            const month = ("0" + (now.getMonth() + 1)).slice(-2);
+            const date = ("0" + now.getDate()).slice(-2);
+            const correctPW = month + date;
+
+            if (input === correctPW) {
+                // パスワードが合っていたら指定のURLへ飛ばす
+                window.location.href = "https://www.google.com"; // ここにリンク先を貼る
+            } else {
+                alert("パスワードが違います。");
+            }
+        }
+    </script>
+</body>
+</html>
