@@ -5,19 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FILTERIZE - 保護ページ</title>
     <style>
-        /* 画像のデザインを再現するCSS */
         :root {
             --bg-color: #000000;
             --text-main: #ffffff;
             --text-sub: rgba(255, 255, 255, 0.6);
-            --accent-green: #ccff00; /* 画像の鮮やかな黄緑色 */
+            --accent-green: #ccff00;
         }
 
         body, html {
             margin: 0;
             padding: 0;
             height: 100%;
-            overflow: hidden; /* スクロールバーを隠す */
+            overflow: hidden;
             background-color: var(--bg-color);
             color: var(--text-main);
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -28,16 +27,14 @@
             position: relative;
         }
 
-        /* 画面全体のテキストレイアウト */
         .container {
-            text-align: left; /* 左揃え */
-            padding-left: 10%; /* 画像の余白を再現 */
+            text-align: left;
+            padding-left: 10%;
             width: 100%;
-            max-width: 1200px; /* PCでの見栄え用 */
-            z-index: 1; /* コンテンツを前面に */
+            max-width: 1200px;
+            z-index: 1;
         }
 
-        /* 上部のアクセント線 */
         .top-line {
             width: 50px;
             height: 2px;
@@ -45,17 +42,15 @@
             margin-bottom: 30px;
         }
 
-        /* 巨大なタイトルテキスト "FILTERIZE" */
         .main-title {
-            font-size: 15vw; /* 画面幅に合わせて伸縮、画像を再現 */
-            font-weight: 700; /* 極太 */
-            text-transform: uppercase; /* 大文字固定 */
+            font-size: 15vw;
+            font-weight: 800;
+            text-transform: uppercase;
             line-height: 0.9;
             margin: 0;
-            letter-spacing: -2px; /* 字間を詰める */
+            letter-spacing: -2px;
         }
 
-        /* サブテキスト "THE BEST ANTI LOILOFILTER" */
         .sub-title {
             font-size: 14px;
             text-transform: uppercase;
@@ -64,34 +59,31 @@
             letter-spacing: 2px;
         }
 
-        /* 入力フォーム部分 */
         .pw-form {
             display: flex;
+            flex-wrap: wrap; /* スマホでボタンがはみ出さないように */
+            gap: 15px;
             align-items: center;
         }
 
-        /* パスワード入力欄 */
         .pw-input {
             background: transparent;
             border: 1px solid var(--accent-green);
             border-radius: 4px;
             color: var(--text-main);
-            padding: 15px 20px;
-            font-size: 18px;
-            letter-spacing: 5px; /* 入力文字の字間 */
-            width: 100%;
-            max-width: 200px;
+            padding: 15px 15px;
+            font-size: 14px; /* 日本語を読みやすく少し小さめに */
+            width: 260px; /* 文字列が長いので幅を広げたよ */
             box-sizing: border-box;
-            -webkit-appearance: none; /* iPhoneのデフォルトスタイルを解除 */
+            -webkit-appearance: none;
         }
         
-        /* プレースホルダーの色 */
+        /* ここが修正ポイント：薄く出る文字（プレースホルダー） */
         .pw-input::placeholder {
-            color: rgba(255, 255, 255, 0.3);
-            letter-spacing: normal; /* プレースホルダーは普通の字間 */
+            color: rgba(255, 255, 255, 0.4);
+            letter-spacing: 0;
         }
 
-        /* 画像のボタンを再現する「入室」ボタン */
         .action-button {
             background-color: var(--accent-green);
             color: #000;
@@ -105,16 +97,9 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            margin-left: 10px;
             transition: all 0.2s;
         }
-        
-        .action-button:hover {
-            opacity: 0.9;
-            transform: scale(1.02);
-        }
 
-        /* フッター部分 */
         .footer {
             position: absolute;
             bottom: 20px;
@@ -125,7 +110,6 @@
             box-sizing: border-box;
             color: rgba(255, 255, 255, 0.3);
             font-size: 12px;
-            font-weight: 300;
             z-index: 0;
         }
     </style>
@@ -134,15 +118,13 @@
 
     <div class="container">
         <div class="top-line"></div>
-
         <h1 class="main-title">FILTERIZE</h1>
-
-        <p class="sub-title">Enter your current access code below</p>
+        <p class="sub-title">Enter your access code</p>
 
         <div class="pw-form">
-            <input type="text" id="pw_input" class="pw-input" placeholder="0302" maxlength="4" autofocus>
+            <input type="text" id="pw_input" class="pw-input" placeholder="管理者に問い合わせてください。" maxlength="4">
             <button class="action-button" onclick="checkPassword()">
-                ENTER <span class="arrow">→</span>
+                ENTER →
             </button>
         </div>
     </div>
@@ -154,23 +136,16 @@
 
     <script>
         function checkPassword() {
-            // 入力された値を取得
             const input = document.getElementById('pw_input').value.trim();
-            
-            // パスワードを月日(MMDD)に設定
             const now = new Date();
             const month = ("0" + (now.getMonth() + 1)).slice(-2);
             const date = ("0" + now.getDate()).slice(-2);
             const correctPW = month + date;
 
-            // パスワードチェック
             if (input === correctPW) {
-                // 正解の場合の動作
-                // --- ここにリンク先を指定してください ---
-                window.location.href = "https://www.google.com"; // Googleへのリンク
+                // パスワード成功時のリンク先（適宜書き換えてね）
+                window.location.href = "https://www.google.com";
             } else {
-                // 不正解の場合の動作
-                // 画像の世界観を崩さないよう、alertをシンプルにする
                 alert("ACCESS DENIED.");
             }
         }
