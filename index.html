@@ -13,104 +13,78 @@
         }
 
         body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            overflow: hidden;
+            margin: 0; padding: 0; height: 100%;
             background-color: var(--bg-color);
             color: var(--text-main);
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            -webkit-font-smoothing: antialiased;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
+            display: flex; justify-content: center; align-items: center;
+            position: relative; overflow-x: hidden;
         }
 
         .container {
-            text-align: left;
-            padding-left: 10%;
-            width: 100%;
-            max-width: 1200px;
-            z-index: 1;
+            text-align: left; padding: 0 5%;
+            width: 90%; max-width: 1000px; z-index: 1;
         }
 
         .top-line {
-            width: 50px;
-            height: 2px;
+            width: 50px; height: 2px;
             background-color: var(--accent-green);
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         .main-title {
-            font-size: 15vw;
-            font-weight: 800;
-            text-transform: uppercase;
-            line-height: 0.9;
-            margin: 0;
-            letter-spacing: -2px;
+            /* PCで切れないように上限（max）を設定 */
+            font-size: clamp(48px, 12vw, 150px);
+            font-weight: 800; text-transform: uppercase;
+            line-height: 0.9; margin: 0; letter-spacing: -2px;
         }
 
         .sub-title {
-            font-size: 14px;
-            text-transform: uppercase;
-            color: var(--text-sub);
-            margin: 40px 0;
-            letter-spacing: 2px;
+            font-size: 14px; text-transform: uppercase;
+            color: var(--text-sub); margin: 30px 0; letter-spacing: 2px;
         }
 
+        /* 入力フォーム */
         .pw-form {
-            display: flex;
-            flex-wrap: wrap; /* スマホでボタンがはみ出さないように */
-            gap: 15px;
-            align-items: center;
+            display: flex; flex-wrap: wrap; gap: 15px; align-items: center;
+        }
+
+        /* 3つのボタン用エリア（最初は隠しておく） */
+        #button-area {
+            display: none; /* 認証成功まで非表示 */
+            flex-wrap: wrap; gap: 15px; margin-top: 20px;
         }
 
         .pw-input {
-            background: transparent;
-            border: 1px solid var(--accent-green);
-            border-radius: 4px;
-            color: var(--text-main);
-            padding: 15px 15px;
-            font-size: 14px; /* 日本語を読みやすく少し小さめに */
-            width: 260px; /* 文字列が長いので幅を広げたよ */
-            box-sizing: border-box;
-            -webkit-appearance: none;
-        }
-        
-        /* ここが修正ポイント：薄く出る文字（プレースホルダー） */
-        .pw-input::placeholder {
-            color: rgba(255, 255, 255, 0.4);
-            letter-spacing: 0;
+            background: transparent; border: 1px solid var(--accent-green);
+            border-radius: 4px; color: var(--text-main);
+            padding: 15px; font-size: 14px; width: 100%; max-width: 300px;
+            box-sizing: border-box; -webkit-appearance: none;
         }
 
         .action-button {
-            background-color: var(--accent-green);
-            color: #000;
-            border: none;
-            border-radius: 4px;
-            padding: 15px 30px;
-            font-size: 16px;
-            font-weight: 700;
-            text-transform: uppercase;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.2s;
+            background-color: var(--accent-green); color: #000;
+            border: none; border-radius: 4px; padding: 15px 30px;
+            font-size: 16px; font-weight: 700; text-transform: uppercase;
+            cursor: pointer; display: flex; align-items: center; gap: 10px;
+        }
+
+        /* V1, V2, V3ボタンのスタイル */
+        .v-button {
+            background-color: transparent; color: var(--accent-green);
+            border: 2px solid var(--accent-green); border-radius: 4px;
+            padding: 12px 40px; font-size: 18px; font-weight: 800;
+            cursor: pointer; transition: 0.3s;
+        }
+        .v-button:hover {
+            background-color: var(--accent-green); color: #000;
         }
 
         .footer {
-            position: absolute;
-            bottom: 20px;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            padding: 0 5%;
-            box-sizing: border-box;
-            color: rgba(255, 255, 255, 0.3);
-            font-size: 12px;
-            z-index: 0;
+            position: absolute; bottom: 20px; width: 100%;
+            display: flex; justify-content: space-between;
+            padding: 0 5%; box-sizing: border-box;
+            color: rgba(255, 255, 255, 0.3); font-size: 12px;
         }
     </style>
 </head>
@@ -119,13 +93,17 @@
     <div class="container">
         <div class="top-line"></div>
         <h1 class="main-title">FILTERIZE</h1>
-        <p class="sub-title">Enter your access code</p>
+        <p id="msg" class="sub-title">Enter your access code</p>
 
-        <div class="pw-form">
-            <input type="text" id="pw_input" class="pw-input" placeholder="管理者に問い合わせてください。" maxlength="4">
-            <button class="action-button" onclick="checkPassword()">
-                ENTER →
-            </button>
+        <div id="login-area" class="pw-form">
+            <input type="text" id="pw_input" class="pw-input" placeholder="管理者に問い合わせてください。">
+            <button class="action-button" onclick="checkPassword()">ENTER →</button>
+        </div>
+
+        <div id="button-area">
+            <button class="v-button" onclick="location.href='https://www.dropbox.com/scl/fi/x596gfwykpdqoi9jlx544/.zip?rlkey=iqalqlu45t96ldlrme7tbdpw1&st=5ujijanl&dl=1'">V1</button>
+            <button class="v-button" onclick="location.href='https://link-v2.com'">V2</button>
+            <button class="v-button" onclick="location.href='https://link-v3.com'">V3</button>
         </div>
     </div>
 
@@ -143,8 +121,10 @@
             const correctPW = month + date;
 
             if (input === correctPW) {
-                // パスワード成功時のリンク先（適宜書き換えてね）
-                window.location.href = "https://www.dropbox.com/scl/fi/x596gfwykpdqoi9jlx544/.zip?rlkey=iqalqlu45t96ldlrme7tbdpw1&st=5ujijanl&dl=1";
+                // 入力エリアを消して、ボタンエリアを表示
+                document.getElementById('login-area').style.display = 'none';
+                document.getElementById('button-area').style.display = 'flex';
+                document.getElementById('msg').innerText = "Access Granted. Select Version:";
             } else {
                 alert("ACCESS DENIED.");
             }
